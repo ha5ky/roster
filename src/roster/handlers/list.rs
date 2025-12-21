@@ -8,7 +8,7 @@ use crate::{
 /// Get all rosters
 #[utoipa::path(
     get,
-    path = "/roster",
+    path = "/api/v1/roster",
     tag = "Roster",
     params(
         RosterQuery

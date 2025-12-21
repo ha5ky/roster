@@ -80,7 +80,7 @@ build:
 # Cross compilation shortcuts
 .PHONY: build-linux-amd64
 build-linux-amd64:
-	$(MAKE) build OS=linux ARCH=amd64
+	$(MAKE) build OS=linux ARCH=amd64 CARGO=cargo-zigbuild
 
 .PHONY: build-linux-arm64
 build-linux-arm64:

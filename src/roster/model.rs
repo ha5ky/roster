@@ -14,6 +14,8 @@ pub struct Roster {
     pub preview_image_url: Option<String>,
     #[schema(example = "https://example.com/poster.png")]
     pub poster_url: Option<String>,
+    #[schema(example = "https://example.com/1.glb")]
+    pub model_url: Option<String>,
     #[schema(example = "竖")]
     pub orientation: Option<String>,
     #[schema(example = "PSA评级卡")]
