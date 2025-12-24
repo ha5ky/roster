@@ -1,8 +1,9 @@
-use axum::{extract::State, Json};
+use axum::extract::State;
 use crate::{
     error::AppError,
     state::AppState,
     users::{model::User, UserRepository},
+    response::ApiResponse,
 };
 
 /// Get all users
@@ -11,12 +12,12 @@ use crate::{
     path = "/users",
     tag = "User",
     responses(
-        (status = 200, description = "List all users", body = Vec<User>)
+        (status = 200, description = "List all users", body = ApiResponse<Vec<User>>)
     )
 )]
 pub async fn list_users(
     State(state): State<AppState>,
-) -> Result<Json<Vec<User>>, AppError> {
+) -> Result<ApiResponse<Vec<User>>, AppError> {
     let users = UserRepository::find_all(&state.db).await?;
-    Ok(Json(users))
+    Ok(ApiResponse::success_list(users))
 }

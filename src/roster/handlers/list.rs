@@ -1,8 +1,9 @@
-use axum::{extract::{State, Query}, Json};
+use axum::extract::{State, Query};
 use crate::{
     error::AppError,
     state::AppState,
     roster::{model::{Roster, RosterQuery}, RosterRepository},
+    response::ApiResponse,
 };
 
 /// Get all rosters
@@ -14,13 +15,13 @@ use crate::{
         RosterQuery
     ),
     responses(
-        (status = 200, description = "List roster", body = Vec<Roster>)
+        (status = 200, description = "List roster", body = ApiResponse<Vec<Roster>>)
     )
 )]
 pub async fn list_roster(
     State(state): State<AppState>,
     Query(query): Query<RosterQuery>,
-) -> Result<Json<Vec<Roster>>, AppError> {
+) -> Result<ApiResponse<Vec<Roster>>, AppError> {
     let roster = RosterRepository::find_by(&state, query).await?;
-    Ok(Json(roster))
+    Ok(ApiResponse::success_list(roster))
 }

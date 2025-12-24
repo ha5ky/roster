@@ -2,13 +2,35 @@ pub mod handlers;
 pub mod model;
 pub mod repository;
 
-use axum::Router;
 use crate::state::AppState;
+use axum::routing::{get, post};
+use axum::Router;
 use handlers::{create::create_user, list::list_users};
 
 pub use repository::UserRepository;
 
+use utoipa::OpenApi;
+
+#[derive(OpenApi)]
+#[openapi(
+    paths(
+        handlers::list::list_users,
+        handlers::create::create_user,
+    ),
+    components(
+        schemas(
+            model::User,
+            model::CreateUserRequest,
+        )
+    ),
+    tags(
+        (name = "User", description = "User management endpoints")
+    )
+)]
+pub struct UserOpenApi;
+
 pub fn routes() -> Router<AppState> {
     Router::new()
-        .route("/", axum::routing::post(create_user).get(list_users))
+        .route("/users", post(create_user))
+        .route("/users", get(list_users))
 }
